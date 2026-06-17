@@ -4,7 +4,7 @@ def transform_sales(data):
     # ตรวจสอบค่าว่าง
     print("Missing values count:\n", data.isnull().sum())
     data = data.dropna(subset=['order_id'])
-    
+    data["order_date"] = pd.to_datetime(data["order_date"])
     # 1. คำนวณยอดรวม 
     data["total_amount"] = data["quantity"] * data["price"]
     
@@ -61,3 +61,11 @@ def transform_sales(data):
         "orders_per_month": orders_per_month,
         "daily_sales": daily_sales
     }
+
+if __name__ == "__main__":
+    df_raw = pd.read_csv("/opt/airflow/scripts/sales_output.csv")
+    transformed_dict = transform_sales(df_raw) 
+    for table_name, df_data in transformed_dict.items():
+        file_path = f"/opt/airflow/scripts/sales_{table_name}.csv"
+        df_data.to_csv(file_path, index=False)
+        print(f"เซฟตาราง [{table_name}] สำเร็จ!")

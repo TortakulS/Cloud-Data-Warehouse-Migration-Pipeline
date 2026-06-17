@@ -9,9 +9,9 @@ db_name = os.getenv("DB_NAME")
 db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
 
-from plugins.extract import extract_sales
-from plugins.transform import transform_sales
-from plugins.load import load_sales
+from scripts.extract import extract_sales
+from scripts.transform import transform_sales
+from scripts.load import load_sales
 
 def sales_postgres():
     connection_string = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
